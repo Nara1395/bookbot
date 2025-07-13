@@ -20,6 +20,7 @@ import sys
 def main():
     if len(sys.argv) > 2 or len(sys.argv) < 2:
         print("Usage: python3 main.py <path_to_book>")
+        sys.exit(1)
     else:
         path_to_file = sys.argv[1]
         selected_book = book(path_to_file)
