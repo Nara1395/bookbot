@@ -1,46 +1,40 @@
-def get_num_words(text):
-    print("----------- Word Count ----------")
-    words = text.split()
+def get_num_words(content):
+    words = content.split()
     num_words = len(words)
-    print(f"Found {num_words} total words")
+    # print("----------- Word Count ----------")
+    # print(f"Found {num_words} total words")
+    return num_words
 
-def get_character_count(text):
-    print("--------- Character Count -------")
-    char_count_ledger = {}
-    for character in text.lower():
-        if character in char_count_ledger.keys():
-            char_count_ledger[character] = char_count_ledger[character] + 1
+def get_char_count(content):
+    character_count = {}
+    for character in content.lower():
+        if character in character_count.keys():
+            character_count[character] = character_count[character] + 1
         else:
-            char_count_ledger[character] = 1
-    return char_count_ledger
+            character_count[character] = 1
+    return character_count
 
 def sort_on(items):
     return items["num"]
 
-def generate_report(dict_char_counts):
-    report_data = []
-    for key, value in dict_char_counts.items():
-        if key.isalpha():
-            data_entry = {"char": key, "num": value}
-            report_data.append(data_entry)
-        else:
-            # print(f"This is not a char: {key}")
-            continue
-    return report_data
+def format_char_count_only_alphabets(all_characters_dict):
+    list_of_alpha_count = []
+    for letter, count in all_characters_dict.items():
+        if letter.isalpha():
+            list_of_alpha_count.append({"char": letter, "num": count})
+    list_of_alpha_count.sort(reverse=True, key=sort_on)
+    return list_of_alpha_count
 
-def format_report(report_data):
-    for char_data in report_data:
-        character_to_print = ""
-        character_number = 0
-        for key, value in char_data.items():
-            if key == "char":
-                character_to_print = value
-            if key == "num":
-                character_number = value
-        print(f"{character_to_print}: {character_number}")
+def generate_report(content, path_to_file):
+    word_count = get_num_words(content)
+    all_character_count = get_char_count(content)
+    alpha_count_only = format_char_count_only_alphabets(all_character_count)
 
-
-
-
-    report_data.sort(reverse=True, key=sort_on)
-    return report_data
+    print("============ BOOKBOT ============")
+    print(f"Analyzing book found at {path_to_file}")
+    print("----------- Word Count ----------")
+    print(f"Found {word_count} total words")
+    print("--------- Character Count -------")
+    for individual_char_count in alpha_count_only:
+        print(f"{individual_char_count['char']}: {individual_char_count['num']}")
+    print("============= END ===============")
